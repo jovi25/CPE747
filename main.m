@@ -6,7 +6,7 @@ Ac = 0; % Parte Acessível
 Larg = 0; % Busca em Largura
 CoAc = 0; % Parte CoAcessível
 OrdTop = 0; % Ordenamento Topológico
-CompFC = 1; % Componentes Fortemente Conexos
+CompFC = 0; % Componentes Fortemente Conexos
 
 %%------------------------- Entrada de Autômato -------------------------%%
 
@@ -48,8 +48,8 @@ end
 if(Larg == 1)
 
     Largura(Q)
-    disp('Legenda do Resultado (Colunas):');
-    disp('Estado, Tempo de Encontro, Tempo de Finalização');
+    disp('Legenda do Resultado:');
+    disp('Estados, Tempos de Encontro, Tempos Finais');
     
 end
 
@@ -59,7 +59,7 @@ if(CoAc == 1)
 
 CoAcessivel(Q,Qm)
 disp('Legenda do Resultado:')
-disp('Estado, Tempo de Encontro, Tempo Final')
+disp('Estados, Tempos de Encontro, Tempos Finais')
 
 
 end
@@ -70,7 +70,7 @@ if(OrdTop == 1)
 
 OrdenamentoTop(Q)
 disp('Legenda do Resultado:')
-disp('Estado, Tempo de Encontro, Tempo Final')
+disp('Estados, Tempos de Encontro, Tempos Finais')
 
 
 end
@@ -80,5 +80,7 @@ end
 if(CompFC == 1)
 
 SCC(Q)
+disp('Legenda do Resultado:')
+disp('Estados, Tempos de Encontro, Tempos Finais, Ordem da Busca')
 
 end
