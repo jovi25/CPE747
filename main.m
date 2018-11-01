@@ -3,22 +3,12 @@ clc; clear all;
 %%------------------------- Entrada de Operação -------------------------%%
 Prof = 0; % Busca em Profundidade
 Ac = 0; % Parte Acessível
-Larg = 1; % Busca em Largura
+Larg = 0; % Busca em Largura
+CoAc = 0; % Parte CoAcessível
+OrdTop = 0; % Ordenamento Topológico
+CompFC = 1; % Componentes Fortemente Conexos
 
 %%------------------------- Entrada de Autômato -------------------------%%
-
-% Usando duas saídas da função Gamma em um estado:
-% Q{1} = {[2 1]};
-% Q{2} = {[1 2]};
-% Q{3} = {[4 1] [1 2]};
-% Q{4} = {[3 2]};
-
-% Acessar valores: Q{1}{1}(1) por exemplo
-
-
-%% ------------------- Chamando Busca em Profundidade ------------------ %%
-
-if(Prof == 1)
 
 % Estrutura: {[Destino Evento]}
 Q{1} = {[2 1]};
@@ -30,7 +20,16 @@ Q{6} = {[4 1]};
 
 Qi = [1 0 0 0 0 0];
 
-Profundidade(Q,Qi)
+Qm = [0 0 0 0 0 1];
+
+
+%% ------------------- Chamando Busca em Profundidade ------------------ %%
+
+if(Prof == 1)
+
+    Profundidade(Q,Qi)
+    disp('Legenda do Resultado:');
+    disp('Estados encontrados a partir do Estado Inicial escolhido');
 
 end
 
@@ -38,32 +37,48 @@ end
 
 if(Ac == 1)
 
-% Estrutura: {[Destino Evento]}
-Q{1} = {[2 1]};
-Q{2} = {[3 1]};
-Q{3} = {[2 2]};
-Q{4} = {[2 1] [5 2]};
-Q{5} = {[3 2] [6 3]};
-Q{6} = {[4 1]};
-
-Qm = [0 0 0 1 0 0];
-
-Acessivel(Q,Qm)
-
+    Acessivel(Q,Qi)
+    disp('Legenda do Resultado:');
+    disp('Estados Acessíveis a partir do Estado Inicial escolhido');
+    
 end
 
 %% -------------------------- Busca em Largura ------------------------- %%
 
 if(Larg == 1)
 
-% Estrutura: {[Destino Evento]}
-Q{1} = {[2 1]};
-Q{2} = {[3 1]};
-Q{3} = {[2 2]};
-Q{4} = {[2 1] [5 2]};
-Q{5} = {[3 2] [6 3]};
-Q{6} = {[4 1]};
+    Largura(Q)
+    disp('Legenda do Resultado (Colunas):');
+    disp('Estado, Tempo de Encontro, Tempo de Finalização');
+    
+end
 
-Largura(Q)
+%% ------------------------- Parte CoAcessível ------------------------- %%
+
+if(CoAc == 1)
+
+CoAcessivel(Q,Qm)
+disp('Legenda do Resultado:')
+disp('Estado, Tempo de Encontro, Tempo Final')
+
+
+end
+
+%% ----------------------- Ordenamento Topológico ---------------------- %%
+
+if(OrdTop == 1)
+
+OrdenamentoTop(Q)
+disp('Legenda do Resultado:')
+disp('Estado, Tempo de Encontro, Tempo Final')
+
+
+end
+
+%% ------------------- Componentes Fortemente Conexos ------------------ %%
+
+if(CompFC == 1)
+
+SCC(Q)
 
 end
