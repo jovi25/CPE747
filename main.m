@@ -2,8 +2,8 @@ clc; clear all;
 
 %%------------------------- Entrada de Operação -------------------------%%
 Prof = 0; % Busca em Profundidade
-Ac = 1; % Parte Acessível
-
+Ac = 0; % Parte Acessível
+Larg = 1; % Busca em Largura
 
 %%------------------------- Entrada de Autômato -------------------------%%
 
@@ -53,3 +53,17 @@ Acessivel(Q,Qm)
 end
 
 %% -------------------------- Busca em Largura ------------------------- %%
+
+if(Larg == 1)
+
+% Estrutura: {[Destino Evento]}
+Q{1} = {[2 1]};
+Q{2} = {[3 1]};
+Q{3} = {[2 2]};
+Q{4} = {[2 1] [5 2]};
+Q{5} = {[3 2] [6 3]};
+Q{6} = {[4 1]};
+
+Largura(Q)
+
+end
