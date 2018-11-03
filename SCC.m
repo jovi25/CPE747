@@ -39,12 +39,12 @@ for k=1:numel(Q)
 end
 
 time = 0;
-i=0;
+i=1;
 for u=1:numel(Q)
     if(Qp2(index(u),1)==0)
-        [Qalt,Qp2] = DFS_Visit(Qalt,Qp2,index(u),time);
-        i=i+1;
+        [Qalt,Qp2] = DFS_Visit2(Qalt,Qp2,index(u),time,i);
         Qp2(index(u),5)=i;
+        i=i+1;
     end
 end
 
