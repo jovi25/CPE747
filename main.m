@@ -81,6 +81,6 @@ if(CompFC == 1)
 
 SCC(Q)
 disp('Legenda do Resultado:')
-disp('Estados, Tempos de Encontro, Tempos Finais, Ordem da Busca')
+disp('Estados, Tempos de Encontro, Tempos Finais, Componentes Fortemente Conexos')
 
 end
