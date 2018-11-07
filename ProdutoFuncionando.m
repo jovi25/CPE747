@@ -2,7 +2,7 @@ clc; clear all;
 
 % Falta Marcar os Estados
 
-%%------------------------ Entrada de Autômatos -------------------------%%
+%%------------------------ Entrada de AutÃ´matos -------------------------%%
 
 % Estrutura: {[Destino Evento]}
 Q{1} = {[2 1] [3 2]};
@@ -26,6 +26,8 @@ Sm = [0 1 0 0];
 snext(1) = find(Si == 1);
 qnext(1) = find(Qi == 1);
 Reach(1,:) = [snext(1) qnext(1)];
+
+R{1}{1}={[qnext(1) snext(1)]};
 
 % Produto
 
@@ -79,11 +81,19 @@ while wdone==0
                 for m=1:length(Reach(:,1)) 
                     if (Reach(m,1)==auxq1 && Reach(m,2)==auxs1)
                         jump=1;
+                        qhelp=auxq1;
+                        shelp=auxs1;
+                        thelp=auxq2;
                     end
                 end
                 
                 if(jump==0)
-                    R{iget}{i}={[auxq1 auxs1] auxs2};
+                    
+                    if(i>1)
+                        R{iget+1}{i-1}={[qhelp shelp] thelp};
+                    end
+                    
+                    R{iget+1}{i}={[auxq1 auxs1] auxs2};
                     qnext(iset) = auxq1;
                     snext(iset) = auxs1;
                     Reach(iget,:) = [auxq1 auxs1];
