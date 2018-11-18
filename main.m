@@ -7,6 +7,7 @@ Larg = 0; % Busca em Largura
 CoAc = 0; % Parte CoAcessível
 OrdTop = 0; % Ordenamento Topológico
 CompFC = 0; % Componentes Fortemente Conexos
+Obs = 1; % Observador
 
 %%------------------------- Entrada de Autômato -------------------------%%
 
@@ -82,5 +83,24 @@ if(CompFC == 1)
 SCC(Q)
 disp('Legenda do Resultado:')
 disp('Estados, Tempos de Encontro, Tempos Finais, Componentes Fortemente Conexos')
+
+end
+
+
+%% ----------------------------- Observador ---------------------------- %%
+
+if(Obs == 1)
+
+Q{1} = {[2 1]};
+Q{2} = {[3 1]};
+Q{3} = {[2 2] [1 3] [4 4]};
+Q{4} = {[1 1] [3 3]};
+Qi = [1 0 0 0];
+Qm = [0 0 1 0];
+Equo = [3 4];
+    
+[R,Rm] = Observador(Q,Qi,Qm,Equo);
+disp('Legenda do Resultado:')
+disp('Células de {[Estado Destino] [Evento]}')
 
 end
