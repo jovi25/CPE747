@@ -11,9 +11,9 @@ R{1}{1} = {[qnext(1) snext(1)]};
 
 % Produto
 
-iget=0; iset=1; l=1; ir=0; saant=0; ireach=1;
+iget=0; iset=1; ir=0; saant=0; ireach=1;
 while 1
-    i=0;
+    i=1;
     iget = iget+1;
     
     if(iget>length(qnext))
@@ -53,16 +53,19 @@ while 1
             auxs1 = S{sa}{j}(1);
             auxs2 = S{sa}{j}(2);
             
+            R{ir}{1} = [qa sa];
+            
             if(auxq2 == auxs2)
                 
                 i=i+1;
                 iset=iset+1;                
                 
-                if(i>1)
-                    R{ir}{i-1}={[qa sa] [qhelp shelp] thelp};
+                if(i>2)
+                    R{ir}{i-1}={[qhelp shelp] thelp};
                 end
-                    
-                R{ir}{i}={[qa sa] [auxq1 auxs1] auxs2};
+                
+                
+                R{ir}{i}={[auxq1 auxs1] auxs2};
                 
                 qhelp=auxq1;
                 shelp=auxs1;

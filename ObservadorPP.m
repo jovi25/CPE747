@@ -1,4 +1,4 @@
-function [Rf,Rm] = Observador(Q,Qi,Qm,E,Eqo)
+function [Rf] = ObservadorPP(Q,Qi,E,Eqo)
 
 % Determinando as transições observáveis
 j=0;
@@ -12,36 +12,36 @@ end
 % Criando legenda
 for k=1:numel(Q)
     p=1;
-    for j=2:numel(Q{k})
-        if(ismember(Q{k}{j}(2),Equo))
+    for j=2:numel(Q{k})        
+        if(ismember(Q{k}{j}{2},Equo))
             p=p+1;
-            Laux{k}(p)=Q{k}{j}(1);
+            Laux{k}{p}=Q{k}{j}{1};
         end
     end
-    Laux{k}(1)=k;
+    Laux{k}{1}=Q{k}{1};
 end
 
-L=Laux;
+% Organizando o Laux na ordem
+for k=1:numel(Q)
+    for l=1:numel(Laux)
+        if(Laux{l}{1}(1)==k)
+            L{k}=Laux{l};
+        end
+    end
+end
 
-% Arrumando Legenda
-for k=1:numel(L)
-    m=1;
-    while(m < length(L{k}))
-        m=m+1;
-        if(length(L{k})>1)
-            L{k}(end+1:end+length(Laux{L{k}(m)}))=Laux{L{k}(m)};
-            L{k}=unique(L{k});
+Qaux = Q;
+
+% Realizar mesma organização para o Q !!!
+for k=1:numel(Q)
+    for l=1:numel(Qaux)
+        if(Qaux{l}{1}(1)==k)
+            Q{k}=Qaux{l};
         end
     end
 end
 
 qnext{1} = L{(Qi == 1)};
-if(Qm(qnext{1}==1))
-    Rm(1)=1;
-else
-    Rm(1)=0;
-end
-
 
 % Gerando o resultado
 k=0; iq=1;
@@ -52,10 +52,10 @@ while 1
     end
     
     for l=1:length(qnext{k})
-        for m=1:numel(Q{qnext{k}(l)})
-            if(~ismember(Q{qnext{k}(l)}{m}(2),Equo))
+        for m=2:numel(Q{qnext{k}{l}(1)})
+            if(~ismember(Q{qnext{k}{l}(1)}{m}{2},Equo))
                 ir=ir+1;
-                R{k}{ir} = {L{Q{qnext{k}(l)}{m}(1)} Q{qnext{k}(l)}{m}(2)};
+                R{k}{ir} = {L{Q{qnext{k}{l}(1)}{m}{1}} Q{qnext{k}{l}(1)}{m}{2}};
             end
         end
 
@@ -63,31 +63,20 @@ while 1
     
     Rf{k}{1}=qnext{k};
     
-    marcado=0;
-    for i=1:length(Rf{k}{1})
-        if(Qm(Rf{k}{1}(i))==1)
-            marcado=1;
-            Rm(k)=1;
-        end
-    end
-    if(marcado==0)
-        Rm(k)=0;
-    end
     
-    
-    % Tentativa de arrumar os estados e transições "repetidos"
+    % Arrumando os estados e transições "repetidos"
     
     for itent=1:length(Eqo)
         auxcat = []; iitent = 1; iiaux=0;
         while iitent<numel(R{k})
             iitent=iitent+1;
-            if(R{k}{iitent}{2}==Eqo(itent))
+            if(R{k}{iitent}{end}==Eqo(itent))
                 iiaux=iiaux+1;
                 if(iiaux>1)
                     Rf{k}{ia}{1} = [Rf{k}{ia}{1} R{k}{iitent}{1}];
                 else
                     Rf{k}{iitent}{1} = R{k}{iitent}{1};
-                    Rf{k}{iitent}{2} = R{k}{iitent}{2};
+                    Rf{k}{iitent}{2} = R{k}{iitent}{end};
                     ia = iitent;
                 end
             end
@@ -105,7 +94,7 @@ while 1
             if(isempty(Rf{k}{i}))
                 add=0;
             elseif(length(qnext{j})==length(Rf{k}{i}{1}))
-                if(all(ismember(qnext{j},Rf{k}{i}{1})))
+                if(all(ismember(qnext{j}{1},Rf{k}{i}{1}{1})))
                     add=0;
                 end
             end

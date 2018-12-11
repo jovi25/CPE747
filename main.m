@@ -1,46 +1,52 @@
 clc; clear all;
 
-%%------------------------- Entrada de Operação -------------------------%%
+%% ------------------------ Entrada de Operação ------------------------ %%
 Prof = 0; % Busca em Profundidade
 Ac = 0; % Parte Acessível
 Larg = 0; % Busca em Largura
 CoAc = 0; % Parte CoAcessível
 OrdTop = 0; % Ordenamento Topológico
 CompFC = 0; % Componentes Fortemente Conexos
-Obs = 1; % Observador
+Obs = 0; % Observador
+Diag = 0; % Diagnosticador
+Verif = 0; % Verificador
+Atraso = 0; % Atraso para Diagnóstico
 
-%%------------------------- Entrada de Autômato -------------------------%%
+%% ------------------------ Entrada de Autômato ------------------------ %%
 
-% Estrutura: {[Destino Evento]}
+% Estrutura: Q{estado} = {[Destino1 Evento1] [Destino2 Evento2] ... }
+
+% Exemplo de atraso para diagnóstico do caderno
 Q{1} = {[2 1]};
 Q{2} = {[3 1]};
 Q{3} = {[2 2]};
 Q{4} = {[2 1] [5 2]};
 Q{5} = {[3 2] [6 3]};
 Q{6} = {[4 1]};
-
 Qi = [1 0 0 0 0 0];
-
 Qm = [0 0 0 0 0 1];
+    
 
-
-%% ------------------- Chamando Busca em Profundidade ------------------ %%
+%% ----------------------- Busca em Profundidade ----------------------- %%
 
 if(Prof == 1)
-
-    Profundidade(Q,Qi)
+    
     disp('Legenda do Resultado:');
     disp('Estados encontrados a partir do Estado Inicial escolhido');
+    Profundidade(Q,Qi)
 
 end
 
-%% -------------------------- Parte Acessível -------------------------- %%
+%% ------------------------- Autômato Acessível ------------------------ %%
 
 if(Ac == 1)
 
-    Acessivel(Q,Qi)
+    [EstadosAc,Qac] = AutomatoAcessivel(Q,Qi);
     disp('Legenda do Resultado:');
     disp('Estados Acessíveis a partir do Estado Inicial escolhido');
+    disp(EstadosAc)
+    disp('Autômato Acessível');
+    disp(Qac)
     
 end
 
@@ -48,19 +54,22 @@ end
 
 if(Larg == 1)
 
-    Largura(Q)
     disp('Legenda do Resultado:');
     disp('Estados, Tempos de Encontro, Tempos Finais');
+    Largura(Q)
     
 end
 
-%% ------------------------- Parte CoAcessível ------------------------- %%
+%% ------------------------ Autômato CoAcessível ----------------------- %%
 
 if(CoAc == 1)
 
-CoAcessivel(Q,Qm)
-disp('Legenda do Resultado:')
-disp('Estados, Tempos de Encontro, Tempos Finais')
+    [EstadosCoAc,QCoAc] = AutomatoCoAcessivel(Q,Qm);
+    disp('Legenda do Resultado:')
+    disp('Estados CoAcessíveis a partir do Estado Inicial escolhido');
+    disp(EstadosCoAc)
+    disp('Autômato CoAcessível');
+    disp(QCoAc)
 
 
 end
@@ -69,10 +78,9 @@ end
 
 if(OrdTop == 1)
 
-OrdenamentoTop(Q)
-disp('Legenda do Resultado:')
-disp('Estados, Tempos de Encontro, Tempos Finais')
-
+    disp('Legenda do Resultado:')
+    disp('Estados, Tempos de Encontro, Tempos Finais')
+    OrdenamentoTop(Q)
 
 end
 
@@ -80,10 +88,10 @@ end
 
 if(CompFC == 1)
 
-SCC(Q)
-disp('Legenda do Resultado:')
-disp('Estados, Tempos de Encontro, Tempos Finais, Componentes Fortemente Conexos')
-
+    disp('Legenda do Resultado:')
+    disp('Estados, Tempos de Encontro, Tempos Finais, Componentes FC')
+    SCC(Q)
+    
 end
 
 
@@ -91,16 +99,38 @@ end
 
 if(Obs == 1)
 
-Q{1} = {[2 1]};
-Q{2} = {[3 1]};
-Q{3} = {[2 2] [1 3] [4 4]};
-Q{4} = {[1 1] [3 3]};
-Qi = [1 0 0 0];
-Qm = [0 0 1 0];
-Equo = [3 4];
-    
-[R,Rm] = Observador(Q,Qi,Qm,Equo);
-disp('Legenda do Resultado:')
-disp('Células de {[Estado Destino] [Evento]}')
+    [OBS,OBSm] = Observador(Q,Qi,Qm,E,Eqo);
+    disp('Legenda do Resultado:')
+    disp('Células de { {[Estado Atual]} {[Estado Destino] [Evento]} }')
 
+end
+
+%% ------------------------- Diagnosticador ---------------------------- %%
+
+if(Diag == 1)
+
+    Gd = Diagnosticador(Q,Qi,Qm,E,Eqo);
+    disp('Legenda do Resultado:')
+    disp('Células de { {[Estado Atual]} {[Estado Destino] [Evento]} }')
+
+end
+
+%% --------------------------- Verificador ----------------------------- %%
+
+if(Verif == 1)
+
+    Gv = Verificador(Q,Qm,Qi,Eq,Eqo,Equo,Eqf);
+    disp('Legenda do Resultado:')
+    disp('Células de { {[Estado Atual]} {[Estado Destino] [Evento]} }')
+
+end
+
+%% --------------------------- Verificador ----------------------------- %%
+
+if(Atraso == 1)
+    
+    disp('Legenda do Resultado:')
+    disp('Atraso:')
+    AtrasoParaDiagnostico(Q,Qm,Qi,Eq,Eqo,Equo,Eqf)
+    
 end

@@ -1,4 +1,4 @@
-function Qcoac = CoAcessivel(Q,Qm)
+function [EstCoAc,Qout] = AutomatoCoAcessivel(Q,Qm)
 
 % Inicialização
 for k=1:numel(Q)
@@ -60,6 +60,36 @@ for k=1:numel(Q)
     Qcoac(k,2) = Qp(k,2);
     Qcoac(k,3) = Qp(k,4);
     
+end
+
+% Agrupando somente os estados coacessíveis
+i=0;
+for k=1:length(Qcoac(:,3))
+    if(Qcoac(k,3)~=0)
+        i=i+1;
+        EstCoAc(i) = Qcoac(k,1);
+    end
+end
+
+
+% Pegando o autômato CoAcessível
+for k=1:length(Qcoac)
+    if(Qcoac(k,3)~=0)
+        Qout{k}=Q{k};
+    end
+end
+    
+
+% Removendo as transições do CoAcessível
+for k=1:numel(Qout)
+    for i=1:numel(Qout{k})
+        if(Qcoac(Qout{k}{i}(1),3)==0)
+            Qout{k}{i} = [];
+        end
+    end
+    if (~isempty(Qout{k}))
+        Qout{k} = Qout{k}(~cellfun('isempty',Qout{k}));
+    end
 end
 
 end
